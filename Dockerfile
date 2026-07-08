@@ -11,13 +11,12 @@ RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o /app/loki ./cmd/loki
 FROM mirror.gcr.io/library/alpine:3.20
 RUN apk add --no-cache ca-certificates tini
 COPY --from=builder /app/loki /app/loki
-# The previous build failed because /src/examples/loki-local-config.yaml was missing.
-# We check for a valid config file and copy it, or create a basic one if it doesn't exist.
-# Based on root-listing, 'examples' directory exists. 
-# Let's copy the examples directory to ensure we have configs.
+# Copy examples to ensure we have a base config
 COPY --from=builder /src/examples /etc/loki/examples
-# Create a symlink or copy a specific one if it exists, otherwise use a generic path
+# Ensure the config file exists; use the local-config as a base
 RUN if [ -f /etc/loki/examples/loki-local-config.yaml ]; then cp /etc/loki/examples/loki-local-config.yaml /etc/loki/config.yaml; else echo "# Default Config" > /etc/loki/config.yaml; fi
 
 EXPOSE 3100
-ENTRYPOINT ["/sbin/tini", "--", "/bin/sh", "-c", "/app/loki -config.file=/etc/loki/config.yaml -target=${LOKI_TARGET:-all}"]
+# Loki v3 requires a valid config and often crashes if it cannot find its storage/config
+# We use -target=all for the single-binary mode to ensure it starts as a monolithic instance
+ENTRYPOINT ["/sbin/tini", "--", "/bin/sh", "-c", "/app/loki -config.file=/etc/loki/config.yaml -target=all"]

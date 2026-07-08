@@ -75,10 +75,8 @@ LOKI_CONFIG_FILE=configs/local-config.yaml
 
 | Pod | Variable | Value | Kind |
 |-----|----------|-------|------|
-| `loki-distributor` | `LOKI_TARGET` | `"distributor"` | plain |
-| `loki-ingester` | `LOKI_TARGET` | `"ingester"` | plain |
-| `loki-querier` | `LOKI_TARGET` | `"querier"` | plain |
-| `loki-query-frontend` | `LOKI_TARGET` | `"query-frontend"` | plain |
+| `loki` | `LOKI_CONFIG_FILE` | `"/etc/loki/config.yaml"` | plain |
+| `loki` | `LOKI_TARGET` | `"all"` | plain |
 
 ### nexlayer.yaml
 
@@ -86,36 +84,15 @@ LOKI_CONFIG_FILE=configs/local-config.yaml
 application:
   name: loki
   pods:
-    - name: loki-distributor
-      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/loki:9f42d82-fix3"
-      path: /distributor
+    - name: loki
+      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/loki:9f42d82-fix4"
+      path: /
       servicePorts:
         - 3100
       vars:
-        LOKI_TARGET: "distributor"
-    - name: loki-ingester
-      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/loki:9f42d82-fix3"
-      path: /ingester
-      servicePorts:
-        - 3100
-      vars:
-        LOKI_TARGET: "ingester"
-    - name: loki-querier
-      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/loki:9f42d82-fix3"
-      path: /querier
-      servicePorts:
-        - 3100
-      vars:
-        LOKI_TARGET: "querier"
-    - name: loki-query-frontend
-      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/loki:9f42d82-fix3"
-      path: /query-frontend
-      servicePorts:
-        - 3100
-      vars:
-        LOKI_TARGET: "query-frontend"
+        LOKI_CONFIG_FILE: "/etc/loki/config.yaml"
+        LOKI_TARGET: "all"
 ```
-
 <!-- nexlayer:end -->
 
 ## Nexlayer Deployment Plan
@@ -144,7 +121,7 @@ application:
 
 ## Nexlayer Configuration
 <!-- nexlayer:section agent-managed=nexlayer_config -->
-**Last deployed:** 2026-07-08T18:03:42Z  
+**Last deployed:** 2026-07-08T18:11:38Z  
 **Live URL:** https://kitbear-studio-loki.cloud.nexlayer.ai  
 **Runtime:**  · **Port:** auto-detected  
 **Deploy branch:** nexlayer  
@@ -153,34 +130,14 @@ application:
 application:
   name: loki
   pods:
-    - name: loki-distributor
-      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/loki:9f42d82-fix3"
-      path: /distributor
+    - name: loki
+      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/loki:9f42d82-fix4"
+      path: /
       servicePorts:
         - 3100
       vars:
-        LOKI_TARGET: "distributor"
-    - name: loki-ingester
-      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/loki:9f42d82-fix3"
-      path: /ingester
-      servicePorts:
-        - 3100
-      vars:
-        LOKI_TARGET: "ingester"
-    - name: loki-querier
-      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/loki:9f42d82-fix3"
-      path: /querier
-      servicePorts:
-        - 3100
-      vars:
-        LOKI_TARGET: "querier"
-    - name: loki-query-frontend
-      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/loki:9f42d82-fix3"
-      path: /query-frontend
-      servicePorts:
-        - 3100
-      vars:
-        LOKI_TARGET: "query-frontend"
+        LOKI_CONFIG_FILE: "/etc/loki/config.yaml"
+        LOKI_TARGET: "all"
 ```
 <!-- nexlayer:end -->
 
@@ -189,5 +146,6 @@ application:
 | Date | Status | Notes |
 |------|--------|-------|
 | 2026-07-08T17:48:39Z | analyzed | initial repo analysis |
-| 2026-07-08T18:03:42Z | success | deployed https://kitbear-studio-loki.cloud.nexlayer.ai |
+| 2026-07-08T18:11:38Z | success | deployed https://kitbear-studio-loki.cloud.nexlayer.ai |
 <!-- nexlayer:end -->
+
