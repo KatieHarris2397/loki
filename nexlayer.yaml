@@ -1,12 +1,31 @@
 application:
   name: loki
   pods:
-  - name: app
-    image: mirror.gcr.io/grafana/loki:latest
-    path: /ready
-    servicePorts:
-    - 3100
-    volumes:
-    - name: loki-data
-      mountPath: /loki
-      size: 10Gi
+    - name: loki-distributor
+      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/loki:9f42d82-fix3"
+      path: /distributor
+      servicePorts:
+        - 3100
+      vars:
+        LOKI_TARGET: "distributor"
+    - name: loki-ingester
+      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/loki:9f42d82-fix3"
+      path: /ingester
+      servicePorts:
+        - 3100
+      vars:
+        LOKI_TARGET: "ingester"
+    - name: loki-querier
+      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/loki:9f42d82-fix3"
+      path: /querier
+      servicePorts:
+        - 3100
+      vars:
+        LOKI_TARGET: "querier"
+    - name: loki-query-frontend
+      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/loki:9f42d82-fix3"
+      path: /query-frontend
+      servicePorts:
+        - 3100
+      vars:
+        LOKI_TARGET: "query-frontend"
